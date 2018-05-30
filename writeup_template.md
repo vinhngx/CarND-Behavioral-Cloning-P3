@@ -1,9 +1,5 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Behavioral Cloning Project**
@@ -50,13 +46,44 @@ python drive.py model.h5
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
+See model.ipynb for a step by step run of the model. 
+
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py). The model includes RELU layers to introduce nonlinearity.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+| Layer         		|     Description	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 160x320x3 RGB image   							| 
+| Cropping         		| 90x320x3 RGB image   							| 
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 90x320x16 	|
+| RELU					|												|
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 90x320x32 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 45x160x32 				|
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 45x160x32 	|
+| RELU					|												|
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 45x160x64 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 22x80x64 				|
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 22x80x64 	|
+| RELU					|												|
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 22x80x128 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 11x40x128 				|
+| Flatten | Output 56320 |
+| Fully connected | 256 |
+| Dropout | keep_prob = 0.5 |
+| Fully connected | 128 |
+| Dropout | keep_prob = 0.5 |
+| Fully connected		| output 1	|
+
+Total Trainable params: 14,594,817
+
+
+The data is normalized in the model using a Keras lambda layer (code line 18). 
 
 #### 2. Attempts to reduce overfitting in the model
 
