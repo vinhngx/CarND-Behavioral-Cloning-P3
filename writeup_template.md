@@ -46,13 +46,55 @@ python drive.py model.h5
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-See model.ipynb for a step by step run of the model. 
+See model.ipynb for a step by step run and outcome of the script. 
 
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
 
 My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py). The model includes RELU layers to introduce nonlinearity.
+
+The data is normalized in the data generator to range within [-1,1]. The image is further cropped to exclude the top 50 and bottom 20 rows. 
+
+#### 2. Attempts to reduce overfitting in the model
+
+The model contains dropout layers in between the fully connected layers in order to reduce overfitting (model.py lines 21). 
+
+Furthermore, we employ L2 regularization for every layer with weights (i.e., convolutional or fully connected) in order to counteract overfitting.
+
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+
+#### 3. Model parameter tuning
+
+The model used a stochastic gradient descent optimizer with momentum. The learning rate was set to 0.01 for 100 epoch. This learning rate is gradually decayed to ensure convergence to a local optimum.  
+
+#### 4. Appropriate training data
+
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road.
+
+For details about how I created the training data, see the next section. 
+
+### Model Architecture and Training Strategy
+
+#### 1. Solution Design Approach
+
+The overall strategy for deriving a model architecture was to create an architecture with multiple statges of convolution, pooling and non-linearity in order to extract features from images. Then, the extracted features are flatten and fed into a classifier, which is a fully-connected feed-forward neural network. 
+
+My first step was to use a convolution neural network model similar to the model I used for the traffic sign classification task which worked quite well. 
+
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. Training and validation loss (MSE) is monitored during the training process to ensure that the optimizer works properly, and that the validation loss closely follows the training loss. The next step was to run the simulator to see how well the car was driving around track, observe any potentiall erratic behaviours.
+
+This process was re-iterated many times to improve the model. I have found the following problem and fixes:
+
+- Collecting more data persistently imrpoves the model quality. In the end, I colleced ~40k of images by manually driving around the track both clockwise and counter-clockwise.
+
+- There are a large number of images with zero steering angle. In order to balance the training data, we randomly keep only 20% of the images with zero-steering angle. I have found that this selection speeds up traning while also improving the model driving behaviour.
+
+At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+
+#### 2. Final Model Architecture
+
+The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes.
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -80,77 +122,28 @@ My model consists of a convolution neural network with 3x3 filter sizes and dept
 | Dropout | keep_prob = 0.5 |
 | Fully connected		| output 1	|
 
-Total Trainable params: 14,594,817
-
-
-The data is normalized in the model using a Keras lambda layer (code line 18). 
-
-#### 2. Attempts to reduce overfitting in the model
-
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
-
-#### 3. Model parameter tuning
-
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
-
-#### 4. Appropriate training data
-
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
-
-For details about how I created the training data, see the next section. 
-
-### Model Architecture and Training Strategy
-
-#### 1. Solution Design Approach
-
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-#### 2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
+The total number of trainable parameters is 14,594,817.
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I first recorded 4 laps on track one using center lane driving. Here is an example image of center lane driving:
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to recover.
 
 ![alt text][image3]
 ![alt text][image4]
 ![alt text][image5]
 
-Then I repeated this process on track two in order to get more data points.
+Since the two tracks are markedly different, I decided not to collect data on track 2.
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+To augment the data sat, I also flipped images and steering angles.
+The images were cropped, eliminating the top 50 pixels and bottom 20 pixels which contains information that is not essential to predict the steering angle (e.g., the sky).
 
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+After the collection process, I had ~28k data points. I then preprocessed this data by rescaling the data to the range [-1, 1].
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+I finally randomly shuffled the data set and put 5% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 100 as evidenced by the flattening loss. I used an SGD optimizer with momentum. The learning rate was set to 0.01. Choosing larger learning rates led to unstablized training.
