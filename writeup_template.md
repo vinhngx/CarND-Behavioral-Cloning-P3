@@ -30,21 +30,21 @@ My project includes the following files:
 * *model.py* containing the script to create and train the model. *model.ipynb* containing a jupyter notebook version of the same script, with step-by-step execution results.
 * *drive.py* for driving the car in autonomous mode
 * A folder *models* containing trained neural network models:
-** *model_track1.h5* containing a trained convolution neural network for driving on track 1 
-** *model_track2.h5* containing a trained convolution neural network for driving on track 2
+  * *model_track1.h5* containing a trained convolution neural network for driving on track 1 
+  * *model_track2.h5* containing a trained convolution neural network for driving on track 2
 
-Due to large size of the networks (>100MB), they are stored off Github at the following Google Drive:
+Due to large size of the networks exceeding Github limit (>100MB each), they are stored off Github at the following Google Drive:
 https://drive.google.com/open?id=1V4K-CFBg6iKs1h3wL1It0ZPhPnT-WYes
 
 * Videos demonstration of the trained models on track 1 and 2.
-** *run1.mp4* containing video for *model_track1.h5* driving on track 1 at speed 9.
-** *run2.mp4* containing video for *model_track1.h5* driving on track 1 at speed 30.
-** *track2.mp4* containing video for *model_track2.h5* driving on track 2 at speed 5.
+  * *track1_speed9.mp4* containing video for *model_track1.h5* driving on track 1 at speed 9.
+  * *track1_speed30.mp4* containing video for *model_track1.h5* driving on track 1 at speed 30.
+  * *track2.mp4* containing video for *model_track2.h5* driving on track 2 at speed 5.
 
 * writeup_report.md summarizing the results
 
 #### 2. Submission includes functional code
-Download the trained models from [https://drive.google.com/open?id=1V4K-CFBg6iKs1h3wL1It0ZPhPnT-WYes]
+Download the trained models from https://drive.google.com/open?id=1V4K-CFBg6iKs1h3wL1It0ZPhPnT-WYes
 to *models* directory.
 
 Using the Udacity provided simulator and *drive.py* file, the car can be driven autonomously around the track by executing 
@@ -52,8 +52,7 @@ Using the Udacity provided simulator and *drive.py* file, the car can be driven 
 python drive.py ./models/model_track1.h5
 ```
 
-The *drive.py* script can be modified supplying different driving speed. We observe that higher driving speed is generally more challenging to keep the car on track. 
-
+The *drive.py* script can be modified supplying different driving speed. We observe that at higher driving speeds it is generally more challenging to keep the car on track.
 
 #### 3. Submission code is usable and readable
 
@@ -71,11 +70,11 @@ The data is normalized in the data generator to range within [-1,1]. As per sugg
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in between the fully connected layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layers in between the fully connected layers in order to reduce overfitting (model.py lines 177). 
 
 Furthermore, we employ L2 regularization for every layer with weights (i.e., convolutional or fully connected) in order to counteract overfitting.
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line xx-xx where we generate separate data generators for train and validation sets). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 105-106 where we generate separate data generators for train and validation sets). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
@@ -95,7 +94,7 @@ For details about how I created the training data, see the next section.
 
 The overall strategy for deriving a model architecture was to create an architecture with multiple statges of convolution, pooling and non-linearity in order to extract features from images. Then, the extracted features are flatten and fed into a classifier, which is a fully-connected feed-forward neural network. 
 
-My first step was to use a convolution neural network model similar to the model I used for the traffic sign classification task which worked quite well. 
+My first step was to use a convolution neural network model similar to the model I used for the traffic sign classification project which worked quite well. 
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. Training and validation loss (MSE) is monitored during the training process to ensure that the optimizer works properly, and that the validation loss closely follows the training loss. The next step was to run the simulator to see how well the car was driving around track, observe any potentiall erratic behaviours.
 
