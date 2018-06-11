@@ -46,7 +46,6 @@ python drive.py ./models/model_track1.h5
 ```
 
 The *drive.py* script can be modified supplying different driving speed. We observe that at higher driving speeds it is generally more challenging to keep the car on track.
-```
 
 #### 1. Solution Design Approach
 
