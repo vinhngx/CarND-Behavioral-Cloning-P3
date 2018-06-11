@@ -11,6 +11,9 @@ import eventlet.wsgi
 from PIL import Image
 from flask import Flask
 from io import BytesIO
+from keras.applications.resnet50 import preprocess_input
+from keras.preprocessing import image
+
 
 from keras.models import load_model
 import h5py
@@ -44,9 +47,10 @@ class SimplePIController:
 
 
 controller = SimplePIController(0.1, 0.002)
-set_speed = 9
+set_speed = 30
 controller.set_desired(set_speed)
 
+import pdb
 
 @sio.on('telemetry')
 def telemetry(sid, data):
@@ -59,20 +63,30 @@ def telemetry(sid, data):
         speed = data["speed"]
         # The current image from the center camera of the car
         imgString = data["image"]
-        image = Image.open(BytesIO(base64.b64decode(imgString)))
-        image_array = np.asarray(image)
-        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
-
-        throttle = controller.update(float(speed))
-
-        print(steering_angle, throttle)
-        send_control(steering_angle, throttle)
+        img = Image.open(BytesIO(base64.b64decode(imgString)))
 
         # save frame
         if args.image_folder != '':
             timestamp = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S_%f')[:-3]
             image_filename = os.path.join(args.image_folder, timestamp)
-            image.save('{}.jpg'.format(image_filename))
+            img.save('{}.jpg'.format(image_filename))
+            
+        x = image.img_to_array(img)    
+        #x = preprocess_input(x)
+        x = (x - 128)/128.
+
+        image_array = x
+        
+        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+
+        throttle = controller.update(float(speed))
+
+        print('Angle: ', steering_angle, 'Throttle: ', throttle)
+        #pdb.set_trace()
+        
+        send_control(steering_angle, throttle)
+
+
     else:
         # NOTE: DON'T EDIT THIS.
         sio.emit('manual', data={}, skip_sid=True)
