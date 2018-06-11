@@ -152,7 +152,8 @@ I then recorded the vehicle recovering from the left side and right sides of the
 
 Since the two tracks are markedly different, I decided not to collect data on track 2 for the track 1 driving part.
 
-To augment the data set, I also flipped images and steering angles.
+To augment the data set, I also flipped images and steering angles, as per the below examples.
+
 ![center][center]
 ![flip][flip]
 
