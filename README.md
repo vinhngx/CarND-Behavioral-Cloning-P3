@@ -23,25 +23,29 @@ My project includes the following files:
 * *model.py* containing the script to create and train the model. *model.ipynb* containing a jupyter notebook version of the same script, with step-by-step execution results.
 * *drive.py* for driving the car in autonomous mode
 * A folder *models* containing trained neural network models:
-** *model_track1.h5* containing a trained convolution neural network for driving on track 1 
-** *model_track2.h5* containing a trained convolution neural network for driving on track 2
+  * *model_track1.h5* containing a trained convolution neural network for driving on track 1 
+  * *model_track2.h5* containing a trained convolution neural network for driving on track 2
 
-Due to large size of the networks (>100MB), they are stored off Github at the following Google Drive:
+Due to large size of the networks exceeding Github limit (>100MB each), they are stored off Github at the following Google Drive:
 https://drive.google.com/open?id=1V4K-CFBg6iKs1h3wL1It0ZPhPnT-WYes
 
 * Videos demonstration of the trained models on track 1 and 2.
-** *run1.mp4* containing video for *model_track1.h5* driving on track 1 at speed 9.
-** *run2.mp4* containing video for *model_track1.h5* driving on track 1 at speed 30.
-** *track2.mp4* containing video for *model_track2.h5* driving on track 2 at speed 5.
+  * *track1_speed9.mp4* containing video for *model_track1.h5* driving on track 1 at speed 9.
+  * *track1_speed30.mp4* containing video for *model_track1.h5* driving on track 1 at speed 30.
+  * *track2.mp4* containing video for *model_track2.h5* driving on track 2 at speed 5.
 
 * writeup_report.md summarizing the results
 
-To test the pretrained model, download the trained models from [https://drive.google.com/open?id=1V4K-CFBg6iKs1h3wL1It0ZPhPnT-WYes]
+#### 2. Submission includes functional code
+Download the trained models from https://drive.google.com/open?id=1V4K-CFBg6iKs1h3wL1It0ZPhPnT-WYes
 to *models* directory.
 
 Using the Udacity provided simulator and *drive.py* file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py ./models/model_track1.h5
+```
+
+The *drive.py* script can be modified supplying different driving speed. We observe that at higher driving speeds it is generally more challenging to keep the car on track.
 ```
 
 #### 1. Solution Design Approach
