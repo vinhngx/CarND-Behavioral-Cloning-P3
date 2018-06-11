@@ -108,7 +108,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines xx-xx) consisted of a convolution neural network with the following layers and layer sizes.
+The final model architecture (model.py lines 127-180) consisted of a convolution neural network with the following layers and layer sizes.
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -153,11 +153,14 @@ I then recorded the vehicle recovering from the left side and right sides of the
 Since the two tracks are markedly different, I decided not to collect data on track 2 for the track 1 driving part.
 
 To augment the data set, I also flipped images and steering angles.
+![center][center]
+![flip][flip]
+
 The images were cropped, eliminating the top 50 pixels and bottom 20 pixels which contains information that is not essential to predict the steering angle (e.g., the sky and bonnet).
 
 To capture further training data, I also drove around the track in the reverse direction for another 4 laps. 
 
-After the collection process, I had ~28k data points. I then preprocessed this data by rescaling the data to the range [-1, 1].
+After the collection process, I had ~40k data points. I then preprocessed this data by rescaling the data to the range [-1, 1].
 
 
 I finally randomly shuffled the data set and put 5% of the data into a validation set. 
@@ -165,7 +168,7 @@ I finally randomly shuffled the data set and put 5% of the data into a validatio
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. I used an SGD optimizer with momentum. The learning rate was set to 0.001. Choosing larger learning rates led to unstablized training with *nan* loss. To encourage the model to settle into a local minimum, I also lowered the training rate to 0.0001 and further refine the model for 100 epochs. 
 
 ### Track 2 driving
-Due to markedly different road conditions, the model trained on track 1 failed to drive on track 2. In order to drive on track 2, we finetune this model by collecting ~25k images of driving practice on track 2. The model is finetuned for 50 epochs. Upon completing this finetuning, the model can drive on track 2 for an extended distance, as seen in the *track2.mp4* video.
+Due to markedly different road conditions, the model trained on track 1 failed to drive on track 2. In order to drive on track 2, we finetune this model by collecting ~25k images of driving practice on track 2. The model is finetuned for 50 epochs with SGD at learning rate 0.001. Upon completing this finetuning, the model can drive on track 2 for an extended distance, as seen in the *track2.mp4* video.
 
 
 
